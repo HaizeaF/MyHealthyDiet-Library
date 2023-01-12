@@ -10,12 +10,12 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 
-public class Asymetric {
+public class Asymmetric {
 
     public byte[] cipher(String mensaje) {
         byte[] encodedMessage = null;
         try {
-            byte fileKey[] = fileReader("AsymetricPublic.key");
+            byte fileKey[] = fileReader("../files/Public.key");
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(fileKey);
             PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
@@ -31,7 +31,7 @@ public class Asymetric {
     private byte[] decrypt(byte[] mensaje) {
         byte[] decodedMessage = null;
         try {
-            byte fileKey[] = fileReader("AsymetricPrivate.key");
+            byte fileKey[] = fileReader("../files/Private.key");
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(fileKey);
             PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
