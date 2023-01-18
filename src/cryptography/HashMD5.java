@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashMD5 {
 
-    public String cifrarTexto(String texto) {
+    public static String hashText(String texto) {
         MessageDigest messageDigest;
         byte hashedText[] = null;
         try {
