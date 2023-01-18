@@ -13,16 +13,16 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Symetric {
-    static String sSalt = "s_e_c_r_e_t_k_e_y";
+public class Symmetric {
+    static String sSalt = "abcdefghijklmnop";
     private static byte[] salt = sSalt.getBytes();
     
     public String cifrarTexto(String clave, String mensaje) {
         String ret = null;
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
-        try {       
-            keySpec = new PBEKeySpec(clave.toCharArray(),salt,65536,128); 
+        try {
+            keySpec = new PBEKeySpec(clave.toCharArray(),salt,65536,128);
             secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] key = secretKeyFactory.generateSecret(keySpec).getEncoded();
             SecretKey privateKey = new SecretKeySpec(key, "AES"); 
@@ -31,7 +31,7 @@ public class Symetric {
             byte[] encodedMessage = c.doFinal(mensaje.getBytes());
             byte[] iv = c.getIV();
             byte[] combined = concatArrays(iv, encodedMessage);
-            fileWriter("EjemploAES.dat", combined);
+            fileWriter("../files/SymmetricMSG.dat", combined);
             ret = new String(encodedMessage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class Symetric {
 
     private String descifrarTexto(String clave) {
         String ret = null;
-        byte[] fileContent = fileReader("EjemploAES.dat");
+        byte[] fileContent = fileReader("../files/SymmetricMSG.dat");
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
         try {
