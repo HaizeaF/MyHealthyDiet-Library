@@ -2,6 +2,8 @@ package emailService;
 
 import java.security.SecureRandom;
 import java.util.Properties;
+import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -16,14 +18,19 @@ import javax.mail.internet.MimeMessage;
  */
 
 public class MyHealthyDietEmailService {
+    private static final Logger LOGGER=Logger.getLogger(MyHealthyDietEmailService.class.getName());
     
     /**
      * Method that sends a email to the user.
      * @param receiver user that request it.
+     * @param password
      */
 
-    public void sendEmail(String receiver, StringBuilder password) {
-        
+    public static void sendEmail(String receiver, String password) {
+        final ResourceBundle bundle = ResourceBundle.getBundle("emailService.emailCredentials");
+        final String transmitter = bundle.getString("TRANSMITTER");
+        final String emailkey = bundle.getString("EMAILKEY");
+    
         String subject = "Password Recovery for Your Account";
         String body = "Dear customer,\n"
                                 + "\n"
@@ -33,6 +40,7 @@ public class MyHealthyDietEmailService {
                                 + "\n"
                                 + password
                                 + "\n"
+                                + "\n"
                                 + "If you did not initiate this request, please contact our customer service team immediately at myhealthydiet.jhms@gmail.com. We take the security of your account very seriously and will assist you in resolving any unauthorized access to your account.\n"
                                 + "\n"
                                 + "Thank you for choosing MyHealthyDiet for your needs. We appreciate your business and look forward to helping you with any future needs.\n"
@@ -41,11 +49,7 @@ public class MyHealthyDietEmailService {
                                 + "The MyHealthyDiet Team\n"
                                 + "\n"
                                 + "Please note that this is an automated message and replies to this email will not be read. If you have any further questions, please contact customer service.";
-        
-        String transmitter = "myhealthydiet.jhms@gmail.com";
-        
-        String emailkey = "ehlvzgjvtvtiuaqb";
-        
+       
         
         Properties prop = System.getProperties();
         //Using username and password authentication
@@ -66,6 +70,7 @@ public class MyHealthyDietEmailService {
         MimeMessage message = new MimeMessage(session);
 
         try {
+            LOGGER.info("Sending password recovery email.");
             message.setFrom(new InternetAddress(transmitter));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
             message.setSubject(subject);
@@ -75,7 +80,7 @@ public class MyHealthyDietEmailService {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (MessagingException me) {
-            
+            LOGGER.severe(me.getMessage());
         }
     }
     
@@ -83,12 +88,13 @@ public class MyHealthyDietEmailService {
      * 
      * @return password thats generated randomly
      */
-    public StringBuilder generateRandomPassword() {
+    public static StringBuilder generateRandomPassword() {
+        LOGGER.info("Generating new password.");
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder();
         
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 15; i++) {
             password.append(characters.charAt(random.nextInt(characters.length())));
         }
         return password;
