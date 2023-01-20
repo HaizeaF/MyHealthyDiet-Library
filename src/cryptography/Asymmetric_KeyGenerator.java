@@ -22,7 +22,7 @@ public class Asymmetric_KeyGenerator {
 
             // Public
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKey.getEncoded());
-            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\2dam\\Desktop\\reto2\\MyHealthyDiet-Client\\src\\files\\Public.key");
+            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\2dam\\Desktop\\reto2\\MyHealthyDiet-Client\\src\\businessLogic\\Public.key");
             fileOutputStream.write(x509EncodedKeySpec.getEncoded());
             fileOutputStream.close();
 
