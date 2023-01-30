@@ -16,7 +16,7 @@ public class HashMD5 {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return hexadecimal(hashedText);
+        return new String(hashedText);
     }
 
     public static String hexadecimal(byte[] hashedText) {
